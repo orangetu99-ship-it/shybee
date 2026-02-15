@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>超級宇宙無敵霹靂帥的杜侑澄數位基地 - 完整全能版</title>
+    <style>
+        /* --- 全域設定 --- */
+        body {
+            background-color: #0b0f19;
+            color: #e2e8f0;
+            font-family: "Microsoft JhengHei", "Segoe UI", sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        /* --- 標題區 --- */
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { 
+            font-size: 2.5em; margin: 0; 
+            background: linear-gradient(90deg, #ff4d4d, #00d2ff, #39ff14);
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+        }
+        .subtitle { color: #fbbf24; font-weight: bold; letter-spacing: 2px; margin-top: 10px; }
+
+        /* --- 20宮格容器 --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* --- 卡片樣式 --- */
+        .card {
+            background-color: #1e293b;
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover { transform: translateY(-5px); filter: brightness(1.2); }
+        .card h3 { margin: 5px 0; font-size: 1rem; }
+        .card p { font-size: 0.75rem; color: #94a3b8; margin: 0; }
+        .icon { font-size: 2rem; margin-bottom: 5px; }
+
+        /* 霓虹邊框色系 */
+        .red { border-color: #ef4444; box-shadow: 0 0 5px #ef4444; color: #fca5a5; }
+        .blue { border-color: #3b82f6; box-shadow: 0 0 5px #3b82f6; color: #93c5fd; }
+        .green { border-color: #22c55e; box-shadow: 0 0 5px #22c55e; color: #86efac; }
+        .yellow { border-color: #eab308; box-shadow: 0 0 5px #eab308; color: #fde047; }
+        .purple { border-color: #a855f7; box-shadow: 0 0 5px #a855f7; color: #d8b4fe; }
+
+        /* --- 彈跳視窗 (Modal) --- */
+        .modal {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #111827;
+            border: 2px solid #fbbf24;
+            border-radius: 20px;
+            width: 90%; max-width: 800px;
+            height: 85vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+        }
+        .modal-header {
+            padding: 15px 25px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1f2937;
+            border-radius: 18px 18px 0 0;
+        }
+        .modal-title { font-size: 1.5rem; color: #fbbf24; margin: 0; }
+        .close-btn { color: #9ca3af; font-size: 2rem; cursor: pointer; transition: 0.2s; }
+        .close-btn:hover { color: #ef4444; transform: rotate(90deg); }
+        
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            flex-grow: 1;
+            color: #e2e8f0;
+            line-height: 1.8;
+            font-size: 1.1em;
+            text-align: left;
+        }
+
+        /* --- 小說專用排版 --- */
+        .novel-text p { margin-bottom: 1.5em; text-indent: 2em; }
+        .novel-text h3 { color: #fbbf24; border-bottom: 1px solid #374151; padding-bottom: 10px; margin-top: 30px; }
+
+        /* --- 遊戲通用元件 --- */
+        .btn {
+            background: #3b82f6; color: white; border: none; padding: 12px 24px;
+            border-radius: 8px; cursor: pointer; font-size: 1.1rem; margin: 5px;
+            transition: 0.2s; font-weight: bold;
+        }
+        .btn:hover { background: #2563eb; transform: scale(1.05); }
+        .game-canvas { background: #000; margin: 0 auto; display: block; border: 2px solid #555; max-width: 100%; border-radius: 8px; }
+        
+        /* 躲貓貓格子 */
+        .hide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 300px; margin: 0 auto; }
+        .hide-cell { height: 80px; background: #374151; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; transition: 0.2s; }
+        .hide-cell:hover { background: #4b5563; }
+        
+        /* 手機版調整 */
+        @media (max-width: 768px) {
+            .grid-container { grid-template-columns: repeat(2, 1fr); }
+            .modal-content { width: 95%; height: 90vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🏰 宇宙無敵霹靂帥的杜侑澄的數位基地</h1>
+        <div class="subtitle">SYSTEM V5.1 | NAME UPDATE</div>
+    </header>
+
+    <div class="grid-container">
+        <!-- 第 1 排：核心創作 (紅色) -->
+        <div class="card red" onclick="loadContent('novel')"><div class="icon">📖</div><h3>{真實的世界}</h3><p>完整第一、二章連載</p></div>
+        <div class="card red" onclick="loadContent('chars')"><div class="icon">👥</div><h3>角色資料庫</h3><p>陽太、美月、翔馬</p></div>
+        <div class="card red" onclick="loadContent('world')"><div class="icon">🗺️</div><h3>世界地圖</h3><p>深紫色天空的秘密</p></div>
+        <div class="card red" onclick="loadContent('ideas')"><div class="icon">💡</div><h3>靈感回收筒</h3><p>廢棄的點子</p></div>
+        <div class="card red" onclick="loadContent('progress')"><div class="icon">📈</div><h3>寫作進度</h3><p>完成度 20%</p></div>
+
+        <!-- 第 2 排：遊戲開發 (藍色) -->
+        <div class="card blue" onclick="gameClicker()"><div class="icon">⚡</div><h3>閃電點擊</h3><p>挑戰 87 分彩蛋</p></div>
+        <div class="card blue" onclick="gameSister()"><div class="icon">🧸</div><h3>方塊冒險</h3><p>方塊跳躍遊戲</p></div>
+        <div class="card blue" onclick="gameCafe()"><div class="icon">☕</div><h3>像素咖啡廳</h3><p>限時 60 秒挑戰！</p></div>
+        <div class="card blue" onclick="gameHide()"><div class="icon">👻</div><h3>量子躲貓貓</h3><p>抓出幽靈！</p></div>
+        <div class="card blue" onclick="gameMath()"><div class="icon">🧮</div><h3>數學大戰</h3><p>心算反應力</p></div>
+
+        <!-- 第 3 排：學習研究 (綠色) -->
+        <div class="card green" onclick="appDraw()"><div class="icon">🎨</div><h3>透視畫板</h3><p>一點透視輔助</p></div>
+        <div class="card green" onclick="appVocab()"><div class="icon">🔤</div><h3>英文單字卡</h3><p>翰林三上複習</p></div>
+        <div class="card green" onclick="loadContent('science')"><div class="icon">🧪</div><h3>實驗紀錄</h3><p>靜電與水</p></div>
+        <div class="card green" onclick="gameLogic()"><div class="icon">🧩</div><h3>邏輯謎題</h3><p>守門人的謊言</p></div>
+        <div class="card green" onclick="loadContent('manga')"><div class="icon">📚</div><h3>漫畫推薦</h3><p>必看神作</p></div>
+
+        <!-- 第 4 排：個人生活 (黃/紫) -->
+        <div class="card yellow" onclick="loadContent('lego')"><div class="icon">🧱</div><h3>樂高收藏</h3><p>未來城市系列</p></div>
+        <div class="card yellow" onclick="appTimeCapsule()"><div class="icon">⏳</div><h3>時光膠囊</h3><p>寫信給未來</p></div>
+        <div class="card yellow" onclick="loadContent('bucket')"><div class="icon">🚩</div><h3>夢想清單</h3><p>去日本看漫畫家</p></div>
+        <div class="card purple" onclick="appSecret()"><div class="icon">🎁</div><h3>神祕彩蛋</h3><p>輸入密碼</p></div>
+        <div class="card purple" onclick="loadContent('author')"><div class="icon">🙋</div><h3>關於作者</h3><p>資優班小作家</p></div>
+    </div>
+
+    <!-- 模態視窗結構 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="m-title" class="modal-title">標題</h2>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="m-body" class="modal-body">
+                <!-- 內容會動態載入這裡 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. 完整資料庫 (包含全本小說) ---
+        const db = {
+            // 小說完整內容
+            novel: `
+            <div class="novel-text">
+                <h3>第一章　意外的召喚</h3>
+                <p>陽太原本以為，那天只是一個再普通不過的傍晚。天空被夕陽染成溫熱的橘紅色，校園裡的人潮逐漸散去，風吹過操場邊的樹梢，發出沙沙的聲響。他把書包甩到肩上，慢吞吞地走在回家的路上，腦袋卻一片空白。</p>
+                <p>最近的生活就是這樣——不上不下，說不上快樂，也談不上痛苦。</p>
+                <p>「喂，陽太，你又在發呆了。」美月的聲音從旁邊傳來，她雙手插在外套口袋裡，腳步輕快，和陽太形成鮮明對比。她的眼睛總是很亮，像是無論發生什麼事，都能先找到希望的那一型人。</p>
+                <p>「我沒有發呆。」陽太下意識反駁。</p>
+                <p>「有，你從剛剛開始就一直盯著地板看。」美月笑了一下，「地上又沒有答案。」</p>
+                <p>走在後面的翔馬冷哼了一聲，把耳機往脖子上一掛：「他那個表情，一看就知道又在想一些沒用的事。」</p>
+                <p>「你少管我。」陽太回頭瞪他。</p>
+                <p>三人之中，翔馬總是最直接、也最衝動的那個。相較之下，美月像是平衡點，而陽太——他自己也說不清楚自己算什麼。</p>
+                <p>就在他們拐進回家必經的小巷時，空氣忽然變了。那不是風，也不是聲音，而是一種讓人心臟微微一縮的不安感。</p>
+                <p>「……你們有沒有覺得怪怪的？」美月先停下腳步。</p>
+                <p>陽太還來不及回答，腳下的地面忽然浮現出淡淡的光紋。不是反射的光，而是從地底滲出來的。</p>
+                <p>「等一下——這是什麼？」翔馬下意識後退一步。</p>
+                <p>下一秒，光芒猛然擴散。地面彷彿失去重量，現實像是一層被撕開的薄膜。陽太只來得及伸手想抓住美月，指尖卻只碰到一瞬間的溫度。</p>
+                <p>世界崩解了。失重感席捲而來。耳邊沒有風聲，沒有聲音，只有一種像是被整個世界拋棄的空白。</p>
+                <p>陽太想喊，卻發不出聲。意識逐漸模糊之際，他看見一道模糊的身影——像是在遠處，又像是在他心底。</p>
+                <p>「……終於……」那聲音低得幾乎聽不見，卻清楚地鑽進他的腦海。「被選中的靈魂。」</p>
+                <p>強烈的光芒吞沒了一切。當陽太再次睜開眼睛時，第一個感覺是冷。不是刺骨的寒冷，而是一種帶著濕氣、貼在皮膚上的涼意。他躺在柔軟卻陌生的草地上，鼻尖充滿了泥土與樹木的氣味。</p>
+                <p>「這裡……不是地球吧？」這句話幾乎是自動從他嘴裡跑出來的。</p>
+                <p>天空呈現出不自然的深紫色，雲層緩慢流動，像是活著一樣。遠方的森林被暮色籠罩，樹影層層疊疊，深不見底。</p>
+                <p>「陽太！」熟悉的聲音讓他猛然坐起來。美月就在不遠處，她看起來有些狼狽，但沒有受傷。翔馬也在，正皺著眉觀察四周。</p>
+                <p>「所以我不是在做夢……」翔馬低聲說。</p>
+                <p>陽太站起身，心臟卻跳得異常快。因為他感覺得到——這裡的空氣，正在注視著他們。</p>
+                <p>就在這時，森林深處，某種存在悄然甦醒。命運的齒輪，開始轉動。而這場召喚，才剛剛開始。</p>
+                
+                <hr>
+                
+                <h3>第二章：裂縫彼端的聲音</h3>
+                <p>森林比想像中還要安靜。陽太站在原地，耳邊還殘留著召喚時的轟鳴聲。空氣裡有種奇怪的壓力，像暴風雨來臨前的窒息感。</p>
+                <p>「這裡……不是夢。」美月輕聲說。</p>
+                <p>翔馬彎腰撿起地上一塊石頭，丟向前方。石頭落地，發出清脆聲響。「會痛，會有聲音。那就是真的。」</p>
+                <p>陽太的手仍然微微發抖。他看向遠方——森林深處有一道不自然的光，像是夜空裡倒掛的裂縫。那不是自然現象。那是「召喚」留下來的殘影。</p>
+                <p><strong>不對勁的重力</strong></p>
+                <p>三人剛踏出第一步，地面忽然傳來細微震動。不是地震。是某種「回應」。陽太感覺胸口一緊，像有什麼東西在體內甦醒。他下意識握拳——空氣產生了短暫扭曲。</p>
+                <p>「你們看到了嗎？」他低聲問。</p>
+                <p>翔馬點頭：「像空氣被壓縮了一下。」</p>
+                <p>美月則抬頭看向天空。「不是只有你。」</p>
+                <p>天空的裂縫開始閃爍，頻率與陽太的心跳同步。咚。咚。咚。每一次心跳，都讓空間產生微小震動。</p>
+                <p><strong>第一個異象</strong></p>
+                <p>森林深處傳來低沉的嘶吼。不像野獸。更像——模仿野獸的東西。黑影在樹間穿梭，速度快得異常。</p>
+                <p>「準備跑。」翔馬低聲說。</p>
+                <p>但陽太沒有動。他不知道為什麼，他覺得那東西——是衝著他來的。</p>
+                <p>黑影突然躍出。那是一種形體扭曲的生物，四肢比例失衡，眼睛像碎裂的玻璃。牠沒有完整的輪廓，彷彿從空間裂縫中拼湊出來。</p>
+                <p>「這就是……這個世界的東西？」美月倒抽一口氣。</p>
+                <p>生物發出刺耳鳴叫，猛地撲向陽太。那一瞬間——時間彷彿慢了一拍。陽太的腦海閃過召喚時的那道聲音。</p>
+                <p>「你們並非被選中——你們是被喚醒。」</p>
+                <p>胸口的壓力爆發。一道無形衝擊波自他腳下擴散。空氣震裂。黑影被震飛，撞斷兩棵樹才停下。森林恢復死寂。三人站在原地，連呼吸都忘了。</p>
+                <p>翔馬慢慢轉頭看向陽太。「你剛剛……做了什麼？」</p>
+                <p>陽太低頭看著自己的手。他沒有念咒語。沒有準備動作。他只是——想活下來。</p>
+                <p>美月聲音發顫：「那不是普通的力量。」</p>
+                <p>遠方的裂縫開始擴大。像在回應這股力量。而就在同一時間——某個他們看不見的地方。一個少女緩緩睜開了眼睛。她的腳下，是完全不同的天空。</p>
+                <p style="text-align:center; color:#888;">(未完待續...)</p>
+            </div>
+            `,
+            chars: `<h3>👥 角色資料庫</h3>
+                    <ul>
+                        <li><b>陽太</b>：故事主角，個性內向但擁有強大潛能。來到異世界後發現自己能引發「空間震動」。</li>
+                        <li><b>美月</b>：陽太的青梅竹馬，觀察力敏銳，總是能第一時間發現細節。</li>
+                        <li><b>翔馬</b>：運動神經發達，雖然講話很衝，但在危急時刻會第一個站出來保護大家。</li>
+                    </ul>`,
+            world: `<h3>🗺️ 異世界設定</h3>
+                    <p><b>天空：</b> 呈現深紫色，沒有太陽，只有一條發光的「星脈」。</p>
+                    <p><b>重力：</b> 大約是地球的 80%，所以在這裡跳躍可以跳得比地球高。</p>
+                    <p><b>魔物：</b> 由魔力所構成的怪物，品種不固定，有些可能可以馴服...</p>`,
+            ideas: `<h3>💡 靈感回收筒</h3> 
+                    <ul>
+                        <li>點子1：如果主角的超能力跟他的情緒有關？生氣時震動會變強。</li>
+                        <li>點子2：也許反派是未來世界的翔馬？</li>
+                        <li>點子3：想要設計一個會飛的滑板作為交通工具。</li>
+                    </ul>`,
+            progress: `<h3>📈 寫作與開發進度</h3>
+                    <p><b>小說：</b> 第一、二章完稿。第三章大綱構思中（預計會有新角色登場）。</p>
+                    <p><b>網站：</b> V5.1 名稱更新版上線。</p>
+                    <p><b>遊戲：</b> 「妹妹的冒險」正式更名為「方塊冒險」。</p>`,
+            science: `<h3>🧪 實驗紀錄：水的魔法</h3>
+                    <p><b>實驗目的：</b> 觀察靜電對水流的影響。</p>
+                    <p><b>步驟：</b> 1. 用塑膠尺在頭髮上摩擦 30 秒。 2. 開水龍頭讓水流變得很細。 3. 將尺靠近水流。</p>
+                    <p><b>結果：</b> 水流真的彎曲了！這是因為靜電吸引了水分子。</p>`,
+            manga: `<h3>📚 推薦給小說家的漫畫</h3>
+                    <ol>
+                        <li><b>葬送的芙莉蓮：</b> 故事節奏很慢，但是情感描寫非常細膩，很適合作為寫作參考。</li>
+                        <li><b>迷宮飯：</b> 作者對於怪物的生態設定超級詳細，值得學習！</li>
+                        <li><b>排球少年：</b> 雖然是運動漫畫，但關於「團隊合作」的描寫很棒。</li>
+                    </ol>`,
+            lego: `<h3>🧱 我的樂高收藏</h3>
+                    <p>我最喜歡的是「未來城市」系列。我自己買了 LED 燈條裝在建築物裡面，晚上的時候看起來就像真的城市一樣。</p>
+                    <p>下一個目標是存錢買「千年鷹號」！</p>`,
+            bucket: `<h3>🚩 夢想清單</h3>
+                    <ul>
+                        <li>1. 在小學畢業前寫完這部小說。</li>
+                        <li>2. 學會用 Python 寫更複雜的遊戲。</li>
+                        <li>3. 長大後去日本參觀漫畫家的工作室。</li>
+                    </ul>`,
+            author: `<h3>🙋 關於作者</h3>
+                    <p>嗨！我是<b>杜侑澄</b>，國小三年級資優班的學生。</p>
+                    <p>我喜歡把腦袋裡的故事寫出來，也喜歡用程式碼創造新世界。</p>
+                    <p>這個網站是我自己設計的基地，歡迎參觀！</p>`
+        };
+
+        // --- 變數控制 ---
+        const modal = document.getElementById('modal');
+        const mTitle = document.getElementById('m-title');
+        const mBody = document.getElementById('m-body');
+        let gameLoopId = null; // 用來停止遊戲循環
+
+        // --- 核心功能 ---
+        function openModal(title, content) {
+            mTitle.innerText = title;
+            mBody.innerHTML = content;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            if (gameLoopId) {
+                cancelAnimationFrame(gameLoopId);
+                clearInterval(gameLoopId);
+                gameLoopId = null;
+            }
+            mBody.innerHTML = ''; // 清空內容以節省資源
+        }
+
+        window.onclick = function(e) { if(e.target == modal) closeModal(); }
+
+        // 載入文字內容
+        function loadContent(key) {
+            if(db[key]) {
+                const title = document.querySelector(`.card[onclick*='${key}'] h3`).innerText;
+                openModal(title, db[key]);
+            }
+        }
+
+        // --- 2. 遊戲：閃電點擊 ---
+        function gameClicker() {
+            let score = 0;
+            let time = 10;
+            openModal("⚡ 閃電點擊", `
+                <div style="text-align:center">
+                    <h1 style="font-size:3em; margin:10px">剩餘時間: <span id="g-time" style="color:#ef4444">10</span></h1>
+                    <h2 style="color:#00d2ff">得分: <span id="g-score">0</span></h2>
+                    <button class="btn" style="font-size:2rem;padding:20px 50px" onclick="addClick()">點我！</button>
+                    <p id="g-msg" style="font-size:1.5em; height:30px"></p>
+                </div>
+            `);
+            
+            window.addClick = function() {
+                if(time > 0) {
+                    score++;
+                    document.getElementById('g-score').innerText = score;
+                }
+            };
+
+            gameLoopId = setInterval(() => {
+                time--;
+                if(document.getElementById('g-time')) document.getElementById('g-time').innerText = time;
+                if(time <= 0) {
+                    clearInterval(gameLoopId);
+                    let msg = "時間到！";
+                    if(score === 87) msg = "🎊 觸發彩蛋：87分！太神啦！";
+                    if(document.getElementById('g-msg')) document.getElementById('g-msg').innerHTML = `<span style="color:#fbbf24">${msg}</span>`;
+                }
+            }, 1000);
+        }
+
+        // --- 3. 遊戲：方塊冒險 (已改名) ---
+        function gameSister() {
+            openModal("🧸 方塊冒險", `
+                <p style="text-align:center">說明：點擊畫面或按空白鍵跳躍，躲避紅色障礙物！</p>
+                <canvas id="gameCanvas" width="600" height="300" class="game-canvas"></canvas>
+                <div style="text-align:center;margin-top:10px"><button class="btn" onclick="initJumpGame()">重新開始</button></div>
+            `);
+            setTimeout(initJumpGame, 100);
+        }
+
+        function initJumpGame() {
+            const cvs = document.getElementById('gameCanvas');
+            if(!cvs) return;
+            const ctx = cvs.getContext('2d');
+            
+            let player = { x: 50, y: 250, w: 30, h: 30, dy: 0, jumpPower: -12, grounded: true };
+            let obstacles = [{ x: 600, y: 260, w: 20, h: 40 }];
+            let score = 0;
+            let gameOver = false;
+            let speed = 5;
+
+            function jump() {
+                if (player.grounded) {
+                    player.dy = player.jumpPower;
+                    player.grounded = false;
+                }
+            }
+            cvs.onmousedown = jump;
+            document.onkeydown = (e) => { if(e.code === 'Space') jump(); };
+
+            function loop() {
+                if(gameOver || modal.style.display == 'none') return;
+                ctx.fillStyle = '#111'; ctx.fillRect(0, 0, 600, 300);
+                ctx.fillStyle = '#fbbf24'; ctx.fillRect(0, 280, 600, 20);
+
+                player.dy += 0.6; player.y += player.dy;
+                if (player.y > 250) { player.y = 250; player.dy = 0; player.grounded = true; }
+                ctx.fillStyle = '#00d2ff'; ctx.fillRect(player.x, player.y, player.w, player.h);
+
+                ctx.fillStyle = '#ff4d4d';
+                obstacles.forEach((obs, index) => {
+                    obs.x -= speed;
+                    ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+                    if (player.x < obs.x + obs.w && player.x + player.w > obs.x && player.y < obs.y + obs.h && player.y + player.h > obs.y) gameOver = true;
+                    if (obs.x < -20) {
+                        obstacles.splice(index, 1);
+                        score++;
+                        if(score % 5 === 0) speed += 1;
+                        obstacles.push({ x: 600 + Math.random()*200, y: 260, w: 20 + Math.random()*10, h: 40 });
+                    }
+                });
+                
+                if(obstacles.length === 0) obstacles.push({ x: 600, y: 260, w: 20, h: 40 });
+
+                ctx.fillStyle = 'white'; ctx.font = "20px Arial"; ctx.fillText("Score: " + score, 10, 30);
+                if(gameOver) {
+                    ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0,0,600,300);
+                    ctx.fillStyle = '#ef4444'; ctx.font = "40px Arial"; ctx.fillText("Game Over", 200, 150);
+                } else {
+                    gameLoopId = requestAnimationFrame(loop);
+                }
+            }
+            if(gameLoopId) cancelAnimationFrame(gameLoopId);
+            loop();
+        }
+
+        // --- 4. 遊戲：像素咖啡廳 (限時版) ---
+        function gameCafe() {
+            let money = 0;
+            let time = 60; // 限時 60 秒
+            let currentOrder = "拿鐵";
+            let drinks = ["美式", "拿鐵", "紅茶", "果汁"];
+            let isGameOver = false;
+            
+            openModal("☕ 像素咖啡廳 (限時挑戰)", `
+                <div style="text-align:center">
+                    <h2 style="margin:10px">剩餘時間：<span id="c-time" style="color:#ef4444; font-size:1.5em">60</span> 秒</h2>
+                    <h2 style="margin:20px">客人想要：<span id="order" style="color:#fbbf24; font-size:1.5em">拿鐵</span></h2>
+                    <div id="cafe-controls" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; max-width:400px; margin:0 auto">
+                        <button class="btn" onclick="serve('美式')">☕ 美式</button>
+                        <button class="btn" onclick="serve('拿鐵')">🥛 拿鐵</button>
+                        <button class="btn" onclick="serve('紅茶')">🍵 紅茶</button>
+                        <button class="btn" onclick="serve('果汁')">🧃 果汁</button>
+                    </div>
+                    <h3 style="margin-top:30px">今日營業額：<span id="money" style="color:#22c55e">0</span> 元</h3>
+                    <p id="cafe-msg" style="height:30px; font-weight:bold"></p>
+                    <button id="restart-btn" class="btn" onclick="gameCafe()" style="display:none; margin-top:10px; background:#22c55e">再來一天</button>
+                </div>
+            `);
+
+            // 啟動倒數計時器
+            gameLoopId = setInterval(() => {
+                time--;
+                if(document.getElementById('c-time')) document.getElementById('c-time').innerText = time;
+                
+                if(time <= 0) {
+                    clearInterval(gameLoopId);
+                    isGameOver = true;
+                    document.getElementById('cafe-msg').innerHTML = `<span style="color:#fbbf24; font-size:1.2em">營業結束！總收入：${money} 元</span>`;
+                    document.getElementById('cafe-controls').style.opacity = '0.5';
+                    document.getElementById('cafe-controls').style.pointerEvents = 'none';
+                    document.getElementById('restart-btn').style.display = 'inline-block';
+                }
+            }, 1000);
+
+            window.serve = function(item) {
+                if(isGameOver) return; 
+
+                if(item === currentOrder) {
+                    money += 50;
+                    document.getElementById('money').innerText = money;
+                    document.getElementById('cafe-msg').innerText = "✅ 好喝！客人很滿意！";
+                    document.getElementById('cafe-msg').style.color = "#22c55e";
+                    currentOrder = drinks[Math.floor(Math.random() * drinks.length)];
+                    document.getElementById('order').innerText = currentOrder;
+                } else {
+                    document.getElementById('cafe-msg').innerText = "❌ 做錯了！客人跑掉了...";
+                    document.getElementById('cafe-msg').style.color = "#ef4444";
+                }
+            };
+        }
+
+        // --- 5. 遊戲：量子躲貓貓 ---
+        function gameHide() {
+            let html = `<p style="text-align:center">點擊格子，找出藏起來的幽靈！(純機率)</p><div class="hide-grid">`;
+            for(let i=0; i<9; i++) html += `<div class="hide-cell" id="cell-${i}" onclick="checkHide(${i})">📦</div>`;
+            html += `</div><div style="text-align:center;margin-top:20px"><button class="btn" onclick="gameHide()">重置</button></div>`;
+            openModal("👻 量子躲貓貓", html);
+
+            let ghostPos = Math.floor(Math.random() * 9);
+            window.checkHide = function(idx) {
+                let cell = document.getElementById(`cell-${idx}`);
+                if(idx === ghostPos) {
+                    cell.innerText = "👻";
+                    cell.style.backgroundColor = "#fbbf24";
+                } else {
+                    cell.innerText = "💨";
+                    cell.style.backgroundColor = "#111";
+                }
+            };
+        }
+
+        // --- 6. 遊戲：數學大戰 ---
+        function gameMath() {
+            let n1 = Math.floor(Math.random()*20) + 5;
+            let n2 = Math.floor(Math.random()*20) + 5;
+            let op = Math.random() > 0.5 ? "+" : "-";
+            if(op === "-" && n1 < n2) [n1, n2] = [n2, n1];
+            let ans = op === "+" ? n1 + n2 : n1 - n2;
+
+            openModal("🧮 數學大戰", `
+                <div style="text-align:center; padding:40px">
+                    <h1 style="font-size:3em">${n1} ${op} ${n2} = ?</h1>
+                    <input type="number" id="m-ans" style="font-size:1.5rem; padding:10px; width:100px; text-align:center; border-radius:5px; border:none">
+                    <br><br>
+                    <button class="btn" onclick="checkMath(${ans})">發動攻擊</button>
+                    <p id="math-msg" style="font-size:1.5em; height:30px"></p>
+                </div>
+            `);
+
+            window.checkMath = function(correct) {
+                let val = parseInt(document.getElementById('m-ans').value);
+                if(val === correct) {
+                    document.getElementById('math-msg').innerHTML = "<span style='color:#22c55e'>攻擊成功！怪物倒下了！</span>";
+                    setTimeout(gameMath, 1000);
+                } else {
+                    document.getElementById('math-msg').innerHTML = "<span style='color:#ef4444'>計算錯誤！被攻擊了！</span>";
+                }
+            };
+        }
+
+        // --- 7. 應用：透視畫板 ---
+        function appDraw() {
+            openModal("🎨 透視畫板", `
+                <p style="text-align:center">點擊畫布任何地方，會自動連線到中央的「消失點」</p>
+                <canvas id="artCanvas" width="600" height="400" class="game-canvas" style="background:#fff; cursor:crosshair"></canvas>
+                <div style="text-align:center"><button class="btn" onclick="appDraw()">清除畫布</button></div>
+            `);
+
+            setTimeout(() => {
+                const cvs = document.getElementById('artCanvas');
+                const ctx = cvs.getContext('2d');
+                const cx = 300, cy = 200;
+                ctx.fillStyle = 'red'; ctx.beginPath(); ctx.arc(cx, cy, 3, 0, Math.PI*2); ctx.fill();
+
+                cvs.onmousedown = function(e) {
+                    const rect = cvs.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    ctx.strokeStyle = '#333'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(cx, cy); ctx.stroke();
+                    ctx.fillStyle = 'blue'; ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI*2); ctx.fill();
+                };
+            }, 100);
+        }
+
+        // --- 8. 應用：英文單字卡 ---
+        function appVocab() {
+            const list = [{e:"Apple", c:"蘋果"}, {e:"Banana", c:"香蕉"}, {e:"Cat", c:"貓"}, {e:"Dog", c:"狗"}, {e:"Elephant", c:"大象"}, {e:"Flower", c:"花"}, {e:"Guitar", c:"吉他"}, {e:"House", c:"房子"}];
+            let idx = 0;
+            openModal("🔤 英文單字卡", `
+                <div style="text-align:center; padding:50px">
+                    <h1 id="v-en" style="font-size:4em; margin-bottom:10px">Apple</h1>
+                    <h2 id="v-ch" style="font-size:2em; color:#fbbf24; visibility:hidden">蘋果</h2>
+                    <br>
+                    <button class="btn" onclick="document.getElementById('v-ch').style.visibility='visible'">看答案</button>
+                    <button class="btn" onclick="nextV()">下一個</button>
+                </div>
+            `);
+            window.nextV = function() {
+                idx = (idx + 1) % list.length;
+                document.getElementById('v-en').innerText = list[idx].e;
+                document.getElementById('v-ch').innerText = list[idx].c;
+                document.getElementById('v-ch').style.visibility = 'hidden';
+            };
+        }
+
+        // --- 9. 遊戲：邏輯謎題 ---
+        function gameLogic() {
+            openModal("🧩 邏輯謎題", `
+                <div style="padding:30px">
+                    <h3>斯芬克斯的謎題：</h3>
+                    <p style="font-size:1.2em">「什麼東西早晨四條腿，中午兩條腿，傍晚三條腿？」</p>
+                    <input type="text" id="l-ans" placeholder="請輸入答案..." style="padding:10px; font-size:1.1em">
+                    <button class="btn" onclick="checkLogic()">回答</button>
+                    <p id="l-msg" style="margin-top:20px; font-size:1.2em"></p>
+                </div>
+            `);
+            window.checkLogic = function() {
+                let ans = document.getElementById('l-ans').value;
+                if(ans.includes("人")) document.getElementById('l-msg').innerHTML = "<span style='color:#22c55e'>答對了！這就是人類的一生。</span>";
+                else document.getElementById('l-msg').innerHTML = "<span style='color:#ef4444'>錯了...再想想嬰兒、成人和老人的樣子。</span>";
+            };
+        }
+
+        // --- 10. 應用：時光膠囊 ---
+        function appTimeCapsule() {
+            let saved = localStorage.getItem("myCapsule") || "";
+            openModal("⏳ 時光膠囊", `
+                <p>寫給 2029 年（六年級）的自己：</p>
+                <textarea id="capsule-text" style="width:100%; height:150px; background:#333; color:white; border:1px solid #555; padding:10px">${saved}</textarea>
+                <br><br>
+                <button class="btn" onclick="saveCapsule()">封存並鎖上</button>
+                <p id="c-msg"></p>
+            `);
+            window.saveCapsule = function() {
+                localStorage.setItem("myCapsule", document.getElementById('capsule-text').value);
+                document.getElementById('c-msg').innerText = "✅ 已成功儲存到瀏覽器記憶體中！";
+            };
+        }
+
+        // --- 11. 神祕彩蛋 ---
+        function appSecret() {
+            openModal("🎁 神祕彩蛋", `
+                <div style="text-align:center; padding:40px">
+                    <h3>請輸入啟動密碼：</h3>
+                    <input type="text" id="pass" style="padding:10px; font-size:1.2em">
+                    <button class="btn" onclick="checkPass()">啟動</button>
+                    <div id="secret-area"></div>
+                </div>
+            `);
+            window.checkPass = function() {
+                if(document.getElementById('pass').value === "2026") {
+                    document.getElementById('secret-area').innerHTML = `
+                        <h1 style="color:#00d2ff; font-size:3em; animation: blink 1s infinite">🎉 資優班萬歲！🎉</h1>
+                        <p>你解鎖了開發者模式！繼續加油，未來的工程師！</p>
+                    `;
+                } else {
+                    alert("密碼錯誤！提示：今年的年份");
+                }
+            };
+        }
+
+    </script>
+</body>
+</html>
